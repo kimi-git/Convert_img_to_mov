@@ -46,4 +46,3 @@ if [ $? -eq 0 ]; then
     # 作業フォルダを削除
     rm -r $temp_folder    
 fi
-
