@@ -17,6 +17,11 @@ file_name=`date -d 'yesterday' '+%Y%m%d'`
 # 前日の年を取得
 year=$(date -d "$file_name" '+%Y')
 
+# 前日の年のフォルダがなければ作成
+if [ ! -d "${Year}" ]; then
+    mkdir "${Year}"
+fi
+
 # テンポラリフォルダを作成しファイルをコピーカレントディレクトリを変更
 mkdir -p temp 
 mv ${file_name}*.jpg  ./temp/  || exit 1
@@ -35,7 +40,7 @@ ffmpeg -f image2 -r 15 -i pic%05d.jpg -r 15 -an -vcodec libx264 -pix_fmt yuv420p
 if [ $? -eq 0 ]; then
 
     # 動画ファイルの移動
-    mv "${file_name}.mp4" ../${year}/"${file_name}_${rasp}.mp4"
+    mv "${file_name}.mp4" ../${year}/"${file_name}_${rasp}.mp4" || exit 1
     # tempフォルダから移動、消去
     cd ..
     rm -r temp
